@@ -1,6 +1,6 @@
 # Atomic Reference Cell
 
-This project provide two structures: `Arc<T>` and `WeakArc<T>` .
+This project provide two structures: `Arc<T>` and `WeakArc<T>` for Swift.
 
 ## Usage
 
