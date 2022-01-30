@@ -30,3 +30,11 @@ let z: Int? = *y
 assert(z == 1)
 ```
 
+## Installation
+
+SwiftPM:
+
+```swift
+.package(url: "https://github.com/cjwcommuny/AtomicReferenceCell", from: "0.1.0")
+```
+
