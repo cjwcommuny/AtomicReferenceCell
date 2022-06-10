@@ -1,7 +1,7 @@
 public struct WeakArc<T> {
-    private weak var inner: ArcInnerWrapper<T>?
+    weak var inner: ArcInnerWrapper<T>?
     
-    public var value: T? {
+    public var deref: T? {
         inner?.value
     }
     
@@ -14,32 +14,32 @@ public struct WeakArc<T> {
 
 prefix operator *
 prefix func * <T>(x: WeakArc<T>) -> T? {
-    return x.value
+    return x.deref
 }
 
 // MARK: - Protocols in std
 
 extension WeakArc: CustomDebugStringConvertible where T: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return self.value.debugDescription
+        return self.deref.debugDescription
     }
 }
 
 extension WeakArc: CustomStringConvertible where T: CustomStringConvertible {
     public var description: String {
-        return self.value?.description ?? "nil"
+        return self.deref?.description ?? "nil"
     }
 }
 
 extension WeakArc: CustomReflectable where T: CustomReflectable {
     public var customMirror: Mirror {
-        return self.value.customMirror
+        return self.deref.customMirror
     }
 }
 
 extension WeakArc: CustomPlaygroundDisplayConvertible where T: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
-        return self.value?.playgroundDescription as Any
+        return self.deref?.playgroundDescription as Any
     }
 }
 
@@ -49,12 +49,12 @@ extension WeakArc: Encodable where T: Encodable {}
 
 extension WeakArc: Equatable where T: Equatable {
     public static func == (lhs: WeakArc<T>, rhs: WeakArc<T>) -> Bool {
-        lhs.value == rhs.value
+        lhs.deref == rhs.deref
     }
 }
 
 extension WeakArc: Hashable where T: Hashable {
     public func hash(into hasher: inout Hasher) {
-        self.value.hash(into: &hasher)
+        self.deref.hash(into: &hasher)
     }
 }

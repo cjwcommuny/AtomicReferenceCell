@@ -1,7 +1,7 @@
 public struct Arc<T> {
     let inner: ArcInnerWrapper<T>
     
-    public var value: T {
+    public var deref: T {
         inner.value
     }
     
@@ -22,18 +22,18 @@ extension Arc {
 
 prefix operator *
 prefix func * <T>(x: Arc<T>) -> T {
-    return x.value
+    return x.deref
 }
 
 // MARK: - Functor & Monad
 
 extension Arc {
     public func map<U>(_ f: (T) -> U) -> Arc<U> {
-        return Arc<U>(f(self.value))
+        return Arc<U>(f(self.deref))
     }
     
     public func flatMap<U>(_ f: (T) -> Arc<U>) -> Arc<U> {
-        return f(self.value)
+        return f(self.deref)
     }
 }
 
@@ -41,25 +41,25 @@ extension Arc {
 
 extension Arc: CustomDebugStringConvertible where T: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return self.value.debugDescription
+        return self.deref.debugDescription
     }
 }
 
 extension Arc: CustomStringConvertible where T: CustomStringConvertible {
     public var description: String {
-        return self.value.description
+        return self.deref.description
     }
 }
 
 extension Arc: CustomReflectable where T: CustomReflectable {
     public var customMirror: Mirror {
-        return self.value.customMirror
+        return self.deref.customMirror
     }
 }
 
 extension Arc: CustomPlaygroundDisplayConvertible where T: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
-        return self.value.playgroundDescription
+        return self.deref.playgroundDescription
     }
 }
 
@@ -68,7 +68,7 @@ extension Arc: Identifiable where T: Identifiable {
     public typealias ID = T.ID
     
     public var id: Self.ID {
-        return self.value.id
+        return self.deref.id
     }
 }
 
@@ -78,19 +78,19 @@ extension Arc: Encodable where T: Encodable {}
 
 extension Arc: Equatable where T: Equatable {
     public static func == (lhs: Arc<T>, rhs: Arc<T>) -> Bool {
-        lhs.value == rhs.value
+        lhs.deref == rhs.deref
     }
 }
 
 extension Arc: Comparable where T: Comparable {
     public static func < (lhs: Arc<T>, rhs: Arc<T>) -> Bool {
-        return lhs.value < rhs.value
+        return lhs.deref < rhs.deref
     }
 }
 
 extension Arc: Hashable where T: Hashable {    
     public func hash(into hasher: inout Hasher) {
-        self.value.hash(into: &hasher)
+        self.deref.hash(into: &hasher)
     }
 }
 
